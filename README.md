@@ -1,119 +1,221 @@
-# Gerenciador de Produtos
+# First Decision Teste
 
-Este é um projeto de teste técnico para a vaga de Desenvolvedor PHP (Laravel), implementando um sistema de gerenciamento de produtos com autenticação, API e interface web.
+Cadastro de produtos com Laravel.
 
-## Tecnologias Utilizadas
+## Requisitos
 
-- **Laravel 11**: Framework PHP principal.
-- **Docker & Docker Compose**: Para ambiente de desenvolvimento containerizado.
-- **Laravel Breeze**: Para autenticação (login, registro, recuperação de senha).
-- **Laravel Sanctum**: Para autenticação de API.
-- **MySQL**: Banco de dados relacional.
-- **PHPUnit**: Para testes automatizados.
-- **Tailwind CSS**: Para estilização da interface web (via Breeze).
+- Docker instalado e configurado
+- Docker Compose instalado
 
-## Pré-requisitos
+## Instalação e Execução
 
-- Docker e Docker Compose instalados.
+1. Clone o repositório
+   ```bash
+   git clone https://github.com/fabianomuniz/First-Decision-teste.git
+   cd first-decision-teste
+   ```
 
-## Instalação e Configuração
+2. Suba os containers com Docker Compose
+   ```bash
+   docker compose up --build -d
+   ```
+   Durante o processo de build, o Docker executará automaticamente as configurações necessárias.
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone <url-do-repositorio>
-    cd first-decision-teste
-    ```
+## Acesso ao painel via WEB
 
-2.  **Configure as variáveis de ambiente:**
-    Copie o arquivo `.env.example` para `.env`:
-    ```bash
-    cp .env.example .env
-    ```
+- **URL:** http://localhost
+- **Usuário:** test@example.com
+- **Senha:** password
 
-3.  **Instale as dependências via Docker (Sail):**
-    Este comando irá instalar as dependências do Composer usando um container temporário.
-    ```bash
-    docker run --rm \
-        -u "$(id -u):$(id -g)" \
-        -v "$(pwd):/var/www/html" \
-        -w /var/www/html \
-        laravelsail/php84-composer:latest \
-        composer install --ignore-platform-reqs
-    ```
-
-4.  **Inicie o ambiente Docker:**
-    ```bash
-    ./vendor/bin/sail up -d
-    ```
-    *Nota: Se você não tiver o alias `sail` configurado, use `./vendor/bin/sail`. Recomendamos criar um alias: `alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'`*
-
-5.  **Gere a chave da aplicação:**
-    ```bash
-    ./vendor/bin/sail artisan key:generate
-    ```
-
-6.  **Execute as migrações e seeders:**
-    ```bash
-    ./vendor/bin/sail artisan migrate --seed
-    ```
-
-## Executando a Aplicação
-
-- A aplicação estará acessível em: [http://localhost](http://localhost)
-- O Mailpit (para visualizar emails) estará acessível em: [http://localhost:8025](http://localhost:8025)
-
-## Executando Testes
-
-Para executar os testes automatizados (Unitários e Feature):
-
-```bash
-./vendor/bin/sail artisan test
-```
-
-## API
-
-A API segue os princípios REST e retorna respostas em formato JSON.
+## API – Teste
 
 ### Autenticação
 
-Para acessar os endpoints protegidos, é necessário enviar o token de autenticação no header `Authorization`: `Bearer <seu-token>`.
-*Nota: Para obter um token, você pode criar um endpoint de login específico para API ou usar a autenticação de sessão do Laravel Sanctum para SPAs.*
+As rotas da API são protegidas via token de autenticação.
+Para obter um token, utilize o endpoint de login com o usuário padrão gerado pelo seeder:
 
-### Endpoints de Produtos
+#### Login
+`POST /api/login`
 
-- **GET /api/produtos**: Lista todos os produtos (com paginação e filtros).
-- **POST /api/produtos**: Cria um novo produto.
-- **GET /api/produtos/{id}**: Exibe detalhes de um produto.
-- **PUT /api/produtos/{id}**: Atualiza um produto.
-- **DELETE /api/produtos/{id}**: Remove um produto.
-
-### Estrutura de Resposta
-
-Sucesso:
+**Body (JSON):**
 ```json
 {
-    "data": { ... },
-    "message": "Mensagem de sucesso"
+  "email": "test@example.com",
+  "password": "password"
 }
 ```
 
-Erro de Validação (padrão Laravel):
+**Resposta: 200 OK**
 ```json
 {
-    "message": "The given data was invalid.",
-    "errors": {
-        "campo": ["Erro de validação"]
-    }
+  "token": "2LjQHd2NHFvghXi2za5eKfW2...a4a063a",
+  "type": "Bearer",
+  "user": {
+    "id": 1,
+    "name": "Test User",
+    "email": "test@example.com"
+  }
 }
 ```
 
-## Funcionalidades Implementadas
+**Exemplo cURL:**
+```bash
+curl -X POST http://localhost/api/login \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password"}'
+```
 
-- **CRUD de Produtos**: Web e API.
-- **Autenticação**: Login, Registro, Logout.
-- **Validação**: Request Form Validation para garantir integridade dos dados.
-- **Busca e Filtros**: Pesquisa por nome/descrição e filtros por preço/estoque.
-- **Testes**: Cobertura de testes para fluxos principais.
-- **SOLID**: Uso de Service Pattern (`ProdutoService`) para isolar regras de negócio dos Controllers.
-- **Localização**: Interface e mensagens em Português.
-# First-Decision-teste
+### Produtos
+
+Todas as rotas abaixo requerem autenticação via token.
+Inclua o header:
+`Authorization: Bearer TOKEN`
+
+#### Listar produtos
+`GET /api/produtos`
+
+**Exemplo:**
+```bash
+curl -X GET http://localhost/api/produtos \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer TOKEN"
+```
+
+**Resposta: 200 OK**
+```json
+{
+	"data": [
+		{
+			"id": 1,
+			"nome": "Produto Exemplo",
+			"descricao": "Descrição do produto.",
+			"preco": 100.00,
+			"quantidade_estoque": 10,
+			"created_at": "2025-12-23T02:06:16.000000Z",
+			"updated_at": "2025-12-23T02:33:47.000000Z"
+		}
+	],
+	"message": "Produtos recuperados com sucesso."
+}
+```
+
+#### Buscar produto por ID
+`GET /api/produtos/{id}`
+
+**Exemplo:**
+```bash
+curl -X GET http://localhost/api/produtos/1 \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer TOKEN"
+```
+
+**Resposta: 200 OK**
+```json
+{
+  "data": {
+    "id": 1,
+    "nome": "Produto Exemplo",
+    "descricao": "Descrição do produto.",
+    "preco": 100.00,
+    "quantidade_estoque": 10,
+    "created_at": "2025-12-23T01:16:33.000000Z",
+    "updated_at": "2025-12-23T01:16:33.000000Z"
+  },
+  "message": "Produto recuperado com sucesso."
+}
+```
+
+#### Criar produto
+`POST /api/produtos`
+
+**Body (JSON):**
+```json
+{
+  "nome": "Mouse Logitech",
+  "descricao": "Mouse sem fio",
+  "preco": 100,
+  "quantidade_estoque": 2
+}
+```
+
+**Resposta: 201 Created**
+```json
+{
+	"data": {
+		"id": 51,
+		"nome": "Mouse Logitech",
+		"descricao": "Mouse sem fio",
+		"preco": 100,
+		"quantidade_estoque": 2,
+		"created_at": "2025-12-23T11:35:15.000000Z",
+		"updated_at": "2025-12-23T11:35:15.000000Z"
+	},
+	"message": "Produto criado com sucesso."
+}
+```
+
+#### Atualizar produto
+`PUT /api/produtos/{id}`
+
+**Body (JSON):**
+```json
+{
+  "nome": "Teclado Corsair",
+  "descricao": "Teclado sem fio",
+  "preco": 150,
+  "quantidade_estoque": 5
+}
+```
+
+**Resposta: 200 OK**
+```json
+{
+	"data": {
+		"id": 51,
+		"nome": "Teclado Corsair",
+		"descricao": "Teclado sem fio",
+		"preco": 150,
+		"quantidade_estoque": 5,
+		"created_at": "2025-12-23T01:16:33.000000Z",
+		"updated_at": "2025-12-23T11:36:31.000000Z"
+	},
+	"message": "Produto atualizado com sucesso."
+}
+```
+
+#### Excluir produto
+`DELETE /api/produtos/{id}`
+
+**Exemplo:**
+```bash
+DELETE /api/produtos/51
+```
+
+**Resposta: 200 OK**
+```json
+{
+    "message": "Produto excluído com sucesso."
+}
+```
+
+## Testando via Insomnia ou Postman
+
+1. Faça o login para gerar o token JWT.
+2. Copie o valor do campo token retornado.
+3. Adicione o token no header `Authorization`: `Bearer TOKEN`.
+4. Teste as rotas de listagem, criação, atualização e exclusão.
+
+## Tecnologias
+
+- **PHP:** 8.2+
+- **Laravel:** 12.x
+- **Node.js** & **NPM**
+- **MySQL:** 8.4
+- **Docker** e **Docker Compose**
+
+## Observações
+
+- O banco de dados é inicializado automaticamente com dados de autenticação através dos seeders do Laravel.
+- São gerados 50 produtos fictícios para popular a tabela inicial de produtos.
+- O campo "Preço (R$)" aceita apenas números no formato float.
