@@ -27,184 +27,148 @@ Cadastro de produtos com Laravel.
 - **Usuário:** test@example.com
 - **Senha:** password
 
-## API – Teste
+## API RESTful Protegida
 
-### Autenticação
+A API segue o padrão RESTful e utiliza tokens Bearer (Laravel Sanctum) para autenticação. Todas as respostas seguem uma estrutura padronizada:
 
-As rotas da API são protegidas via token de autenticação.
-Para obter um token, utilize o endpoint de login com o usuário padrão gerado pelo seeder:
-
-#### Login
-`POST /api/login`
-
-**Body (JSON):**
 ```json
 {
-  "email": "test@example.com",
-  "password": "password"
+  "data": mixed,      // Dados da resposta (objeto, array ou null)
+  "message": string,  // Mensagem descritiva
+  "errors": mixed     // Detalhes de erros (ou null em caso de sucesso)
 }
 ```
 
-**Resposta: 200 OK**
-```json
-{
-  "token": "2LjQHd2NHFvghXi2za5eKfW2...a4a063a",
-  "type": "Bearer",
-  "user": {
-    "id": 1,
-    "name": "Test User",
-    "email": "test@example.com"
-  }
-}
-```
+### 1. Autenticação (Login)
 
-**Exemplo cURL:**
+Para acessar os endpoints protegidos, primeiro você deve obter um token.
+
+**Endpoint:** `POST /api/login`
+
+**Exemplo de Requisição (cURL):**
 ```bash
 curl -X POST http://localhost/api/login \
   -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password"}'
+  -d "email=test@example.com" \
+  -d "password=password"
 ```
 
-### Produtos
-
-Todas as rotas abaixo requerem autenticação via token.
-Inclua o header:
-`Authorization: Bearer TOKEN`
-
-#### Listar produtos
-`GET /api/produtos`
-
-**Exemplo:**
-```bash
-curl -X GET http://localhost/api/produtos \
-  -H "Accept: application/json" \
-  -H "Authorization: Bearer TOKEN"
-```
-
-**Resposta: 200 OK**
-```json
-{
-	"data": [
-		{
-			"id": 1,
-			"nome": "Produto Exemplo",
-			"descricao": "Descrição do produto.",
-			"preco": 100.00,
-			"quantidade_estoque": 10,
-			"created_at": "2025-12-23T02:06:16.000000Z",
-			"updated_at": "2025-12-23T02:33:47.000000Z"
-		}
-	],
-	"message": "Produtos recuperados com sucesso."
-}
-```
-
-#### Buscar produto por ID
-`GET /api/produtos/{id}`
-
-**Exemplo:**
-```bash
-curl -X GET http://localhost/api/produtos/1 \
-  -H "Accept: application/json" \
-  -H "Authorization: Bearer TOKEN"
-```
-
-**Resposta: 200 OK**
+**Exemplo de Resposta de Sucesso (200 OK):**
 ```json
 {
   "data": {
-    "id": 1,
-    "nome": "Produto Exemplo",
-    "descricao": "Descrição do produto.",
-    "preco": 100.00,
-    "quantidade_estoque": 10,
-    "created_at": "2025-12-23T01:16:33.000000Z",
-    "updated_at": "2025-12-23T01:16:33.000000Z"
+    "token": "2|u7sZHfhkFB0DBirYBaIJpNiqJRvbFxcD0VzzwkoQf90969e3",
+    "type": "Bearer",
+    "user": {
+      "id": 1,
+      "name": "Test User",
+      "email": "test@example.com",
+      ...
+    }
   },
-  "message": "Produto recuperado com sucesso."
+  "message": "Login realizado com sucesso.",
+  "errors": null
 }
 ```
 
-#### Criar produto
-`POST /api/produtos`
+### 2. Listar Produtos
 
-**Body (JSON):**
-```json
-{
-  "nome": "Mouse Logitech",
-  "descricao": "Mouse sem fio",
-  "preco": 100,
-  "quantidade_estoque": 2
-}
-```
+Utilize o token obtido no passo anterior para listar os produtos.
 
-**Resposta: 201 Created**
-```json
-{
-	"data": {
-		"id": 51,
-		"nome": "Mouse Logitech",
-		"descricao": "Mouse sem fio",
-		"preco": 100,
-		"quantidade_estoque": 2,
-		"created_at": "2025-12-23T11:35:15.000000Z",
-		"updated_at": "2025-12-23T11:35:15.000000Z"
-	},
-	"message": "Produto criado com sucesso."
-}
-```
+**Endpoint:** `GET /api/produtos`
+**Header:** `Authorization: Bearer {SEU_TOKEN}`
 
-#### Atualizar produto
-`PUT /api/produtos/{id}`
-
-**Body (JSON):**
-```json
-{
-  "nome": "Teclado Corsair",
-  "descricao": "Teclado sem fio",
-  "preco": 150,
-  "quantidade_estoque": 5
-}
-```
-
-**Resposta: 200 OK**
-```json
-{
-	"data": {
-		"id": 51,
-		"nome": "Teclado Corsair",
-		"descricao": "Teclado sem fio",
-		"preco": 150,
-		"quantidade_estoque": 5,
-		"created_at": "2025-12-23T01:16:33.000000Z",
-		"updated_at": "2025-12-23T11:36:31.000000Z"
-	},
-	"message": "Produto atualizado com sucesso."
-}
-```
-
-#### Excluir produto
-`DELETE /api/produtos/{id}`
-
-**Exemplo:**
+**Exemplo de Requisição (cURL):**
 ```bash
-DELETE /api/produtos/51
+# Substitua o token abaixo pelo que você recebeu no login
+curl -X GET http://localhost/api/produtos \
+  -H "Authorization: Bearer 2|u7sZHfhkFB0DBirYBaIJpNiqJRvbFxcD0VzzwkoQf90969e3" \
+  -H "Accept: application/json"
 ```
 
-**Resposta: 200 OK**
+**Exemplo de Resposta de Sucesso (200 OK):**
 ```json
 {
-    "message": "Produto excluído com sucesso."
+  "data": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 1,
+        "nome": "Produto Exemplo",
+        "descricao": "Descrição do produto.",
+        "preco": "100.00",
+        "quantidade_estoque": 10,
+        "created_at": "...",
+        "updated_at": "..."
+      },
+      ...
+    ],
+    "first_page_url": "...",
+    "from": 1,
+    "last_page": 1,
+    "per_page": 10,
+    "total": 1
+  },
+  "message": "Produtos recuperados com sucesso.",
+  "errors": null
 }
+```
+
+### 3. Outras Operações (CRUD)
+
+Você pode realizar operações de criação, atualização e exclusão utilizando os verbos HTTP correspondentes (`POST`, `PUT`, `DELETE`) e enviando o token no header.
+
+**Criar Produto:** `POST /api/produtos`
+**Ver Produto:** `GET /api/produtos/{id}`
+**Atualizar Produto:** `PUT /api/produtos/{id}`
+**Excluir Produto:** `DELETE /api/produtos/{id}`
 ```
 
 ## Testando via Insomnia ou Postman
 
-1. Faça o login para gerar o token JWT.
-2. Copie o valor do campo token retornado.
-3. Adicione o token no header `Authorization`: `Bearer TOKEN`.
-4. Teste as rotas de listagem, criação, atualização e exclusão.
+### Postman
+
+1.  **Login (Obter Token):**
+    *   Crie uma nova requisição `POST` para `http://localhost/api/login`.
+    *   Na aba **Body**, selecione `raw` e escolha `JSON`.
+    *   Insira o JSON de credenciais:
+        ```json
+        {
+          "email": "test@example.com",
+          "password": "password"
+        }
+        ```
+    *   Clique em **Send**. Copie o `token` retornado no corpo da resposta (ex: `2|u7sZHfhk...`).
+
+2.  **Requisições Protegidas (ex: Listar Produtos):**
+    *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
+    *   Vá na aba **Authorization**.
+    *   No menu "Type", selecione **Bearer Token**.
+    *   Cole o token copiado no campo **Token**.
+    *   Clique em **Send**.
+
+---
+
+### Insomnia
+
+1.  **Login (Obter Token):**
+    *   Crie uma nova requisição `POST` para `http://localhost/api/login`.
+    *   Na aba **Body**, selecione `JSON`.
+    *   Insira o JSON de credenciais:
+        ```json
+        {
+          "email": "test@example.com",
+          "password": "password"
+        }
+        ```
+    *   Clique em **Send**. Copie o `token` retornado.
+
+2.  **Requisições Protegidas (ex: Listar Produtos):**
+    *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
+    *   Vá na aba **Auth**.
+    *   Selecione **Bearer Token**.
+    *   Cole o token no campo **Token**.
+    *   Clique em **Send**.
 
 ## Tecnologias
 
