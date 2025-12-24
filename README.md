@@ -29,7 +29,7 @@ Cadastro de produtos com Laravel.
 
 ## API RESTful Protegida
 
-A API segue o padrão RESTful e utiliza tokens Bearer (Laravel Sanctum) para autenticação. Todas as respostas seguem uma estrutura padronizada:
+A API segue o padrão RESTful e utiliza **JSON Web Tokens (JWT)** para autenticação. Todas as respostas seguem uma estrutura padronizada:
 
 ```json
 {
@@ -39,10 +39,9 @@ A API segue o padrão RESTful e utiliza tokens Bearer (Laravel Sanctum) para aut
 }
 ```
 
-### 1. Autenticação (Login)
+### 1. Autenticação
 
-Para acessar os endpoints protegidos, primeiro você deve obter um token.
-
+#### Login
 **Endpoint:** `POST /api/login`
 
 **Exemplo de Requisição (cURL):**
@@ -57,23 +56,30 @@ curl -X POST http://localhost/api/login \
 ```json
 {
   "data": {
-    "token": "2|u7sZHfhkFB0DBirYBaIJpNiqJRvbFxcD0VzzwkoQf90969e3",
-    "type": "Bearer",
-    "user": {
-      "id": 1,
-      "name": "Test User",
-      "email": "test@example.com",
-      ...
-    }
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+    "token_type": "bearer",
+    "expires_in": 3600
   },
-  "message": "Login realizado com sucesso.",
+  "message": "Success",
   "errors": null
 }
 ```
 
+#### Perfil do Usuário (Me)
+**Endpoint:** `GET /api/me`
+**Header:** `Authorization: Bearer {TOKEN}`
+
+#### Atualizar Token (Refresh)
+**Endpoint:** `POST /api/refresh`
+**Header:** `Authorization: Bearer {TOKEN}`
+
+#### Logout
+**Endpoint:** `POST /api/logout`
+**Header:** `Authorization: Bearer {TOKEN}`
+
 ### 2. Listar Produtos
 
-Utilize o token obtido no passo anterior para listar os produtos.
+Utilize o `access_token` obtido no login para acessar os endpoints protegidos.
 
 **Endpoint:** `GET /api/produtos`
 **Header:** `Authorization: Bearer {SEU_TOKEN}`
@@ -82,7 +88,7 @@ Utilize o token obtido no passo anterior para listar os produtos.
 ```bash
 # Substitua o token abaixo pelo que você recebeu no login
 curl -X GET http://localhost/api/produtos \
-  -H "Authorization: Bearer 2|u7sZHfhkFB0DBirYBaIJpNiqJRvbFxcD0VzzwkoQf90969e3" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
   -H "Accept: application/json"
 ```
 
@@ -137,7 +143,7 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
           "password": "password"
         }
         ```
-    *   Clique em **Send**. Copie o `token` retornado no corpo da resposta (ex: `2|u7sZHfhk...`).
+    *   Clique em **Send**. Copie o `access_token` retornado no corpo da resposta.
 
 2.  **Requisições Protegidas (ex: Listar Produtos):**
     *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
@@ -160,7 +166,7 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
           "password": "password"
         }
         ```
-    *   Clique em **Send**. Copie o `token` retornado.
+    *   Clique em **Send**. Copie o `access_token` retornado.
 
 2.  **Requisições Protegidas (ex: Listar Produtos):**
     *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
