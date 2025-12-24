@@ -12,21 +12,25 @@
                     
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 font-bold">Nome:</label>
+                        <div class="h-1 bg-black opacity-80 w-80 my-2 rounded"></div>
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $produto->nome }}</p>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 font-bold">Descrição:</label>
+                        <div class="h-1 bg-black opacity-80 w-80 my-2 rounded"></div>
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $produto->descricao }}</p>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 font-bold">Preço:</label>
+                        <div class="h-1 bg-black opacity-80 w-80 my-2 rounded"></div>
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 font-bold">Quantidade em Estoque:</label>
+                        <div class="h-1 bg-black opacity-80 w-80 my-2 rounded"></div>
                         <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $produto->quantidade_estoque }}</p>
                     </div>
 

@@ -49,7 +49,7 @@
                                 <label for="min_price" class="form-label">Preço Min</label>
                                 <div class="input-group">
                                     <span class="input-group-text">R$</span>
-                                    <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" step="0.01" class="form-control" placeholder="0.00">
+                                    <input type="text" name="min_price" id="min_price" value="{{ request('min_price') }}" class="form-control money" placeholder="0,00">
                                 </div>
                             </div>
 
@@ -58,14 +58,14 @@
                                 <label for="max_price" class="form-label">Preço Max</label>
                                 <div class="input-group">
                                     <span class="input-group-text">R$</span>
-                                    <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" step="0.01" class="form-control" placeholder="0.00">
+                                    <input type="text" name="max_price" id="max_price" value="{{ request('max_price') }}" class="form-control money" placeholder="0,00">
                                 </div>
                             </div>
 
                             <!-- Min Stock -->
                             <div class="col-md-2">
                                 <label for="min_stock" class="form-label">Estoque Min</label>
-                                <input type="number" name="min_stock" id="min_stock" value="{{ request('min_stock') }}" class="form-control">
+                                <input type="number" name="min_stock" id="min_stock" value="{{ request('min_stock') }}" min="0" class="form-control">
                             </div>
 
                             <!-- Buttons -->
@@ -242,6 +242,10 @@
             modalBodyName.textContent = nome;
             modalBodyId.textContent = id;
             modalForm.action = action;
+        });
+
+        $(document).ready(function(){
+            $('.money').mask('000.000.000.000.000,00', {reverse: true});
         });
     </script>
 </x-app-layout>

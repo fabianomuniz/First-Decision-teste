@@ -35,7 +35,7 @@
 
                         <div class="mb-4">
                             <label for="descricao" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descrição</label>
-                            <textarea name="descricao" id="descricao" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" maxlength="5000">{{ old('descricao') }}</textarea>
+                            <textarea name="descricao" id="descricao" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" maxlength="5000" rows="5" style="resize: none; overflow-y: auto;">{{ old('descricao') }}</textarea>
                             @error('descricao')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror

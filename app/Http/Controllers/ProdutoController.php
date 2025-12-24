@@ -23,6 +23,15 @@ class ProdutoController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $filters = $request->only(['search', 'min_price', 'max_price', 'min_stock', 'sort', 'direction']);
+        
+        // Clean mask from price inputs
+        if (isset($filters['min_price'])) {
+            $filters['min_price'] = str_replace(['.', ','], ['', '.'], $filters['min_price']);
+        }
+        if (isset($filters['max_price'])) {
+            $filters['max_price'] = str_replace(['.', ','], ['', '.'], $filters['max_price']);
+        }
+
         $produtos = $this->produtoService->list($filters, $perPage);
 
         return view('produtos.index', compact('produtos'));
@@ -43,8 +52,8 @@ class ProdutoController extends Controller
     {
         $this->produtoService->create($request->validated());
 
-        return redirect()->back()
-                         ->with('success', 'Produto criado com sucesso! Redirecionando...');
+        return redirect()->route('produtos.index')
+                         ->with('success', 'Produto criado com sucesso!');
     }
 
     /**

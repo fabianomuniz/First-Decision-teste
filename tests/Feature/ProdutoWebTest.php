@@ -31,11 +31,19 @@ class ProdutoWebTest extends TestCase
         $dados = [
             'nome' => 'Produto Web Test',
             'descricao' => 'Desc',
-            'preco' => 50.00,
+            'preco' => '50,00',
             'quantidade_estoque' => 20,
         ];
 
         $response = $this->actingAs($user)->post(route('produtos.store'), $dados);
+
+        // Debug validation errors if any
+        if ($response->status() === 302 && $response->headers->get('Location') !== route('produtos.index')) {
+             $errors = session('errors');
+             if ($errors) {
+                 dump($errors->all());
+             }
+        }
 
         $response->assertRedirect(route('produtos.index'));
         $this->assertDatabaseHas('produtos', ['nome' => 'Produto Web Test']);

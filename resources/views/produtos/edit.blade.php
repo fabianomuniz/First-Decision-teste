@@ -24,7 +24,7 @@
 
                         <div class="mb-4">
                             <label for="descricao" class="form-label text-gray-700 dark:text-gray-300">Descrição</label>
-                            <textarea name="descricao" id="descricao" class="form-control" maxlength="5000">{{ old('descricao', $produto->descricao) }}</textarea>
+                            <textarea name="descricao" id="descricao" class="form-control" maxlength="5000" rows="5" style="resize: none; overflow-y: auto;">{{ old('descricao', $produto->descricao) }}</textarea>
                             @error('descricao')
                                 <p class="text-danger small mt-1">{{ $message }}</p>
                             @enderror
