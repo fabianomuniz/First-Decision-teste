@@ -187,4 +187,3 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
 
 - O banco de dados é inicializado automaticamente com dados de autenticação através dos seeders do Laravel.
 - São gerados 30 produtos fictícios para popular a tabela inicial de produtos.
-- O campo "Preço (R$)" aceita apenas números no formato float.
