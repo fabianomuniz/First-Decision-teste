@@ -13,12 +13,12 @@ class ApiAuthenticationTest extends TestCase
     public function test_user_can_login_with_valid_credentials()
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'teste@teste.com',
             'password' => bcrypt('password'),
         ]);
 
         $response = $this->postJson('/api/login', [
-            'email' => 'test@example.com',
+            'email' => 'teste@teste.com',
             'password' => 'password',
         ]);
 
