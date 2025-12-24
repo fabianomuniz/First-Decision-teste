@@ -175,6 +175,16 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
     *   Cole o token no campo **Token**.
     *   Clique em **Send**.
 
+## Testes Automatizados
+
+O projeto conta com uma suíte de testes automatizados (Feature Tests e Unit Tests) para garantir a integridade da aplicação.
+
+Para executar os testes, utilize o seguinte comando no terminal (dentro do container ou ambiente configurado):
+
+```bash
+php artisan test
+```
+
 ## Tecnologias
 
 - **PHP:** 8.2+
