@@ -10,6 +10,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <script>
+                            setTimeout(function() {
+                                window.location.href = "{{ route('produtos.index') }}";
+                            }, 3000); // 3 seconds delay
+                        </script>
+                    @endif
+
                     <form action="{{ route('produtos.store') }}" method="POST">
                         @csrf
 

@@ -43,8 +43,8 @@ class ProdutoController extends Controller
     {
         $this->produtoService->create($request->validated());
 
-        return redirect()->route('produtos.index')
-                         ->with('success', 'Produto criado com sucesso.');
+        return redirect()->back()
+                         ->with('success', 'Produto criado com sucesso! Redirecionando...');
     }
 
     /**
