@@ -118,11 +118,10 @@ curl -X GET http://localhost/api/produtos \
 
 Você pode realizar operações de criação, atualização e exclusão utilizando os verbos HTTP correspondentes (`POST`, `PUT`, `DELETE`) e enviando o token no header.
 
-**Criar Produto:** `POST /api/produtos`
-**Ver Produto:** `GET /api/produtos/{id}`
-**Atualizar Produto:** `PUT /api/produtos/{id}`
+**Criar Produto:** `POST /api/produtos`  
+**Ver Produto:** `GET /api/produtos/{id}`  
+**Atualizar Produto:** `PUT /api/produtos/{id}`  
 **Excluir Produto:** `DELETE /api/produtos/{id}`
-```
 
 ## Testando via Insomnia ou Postman
 
