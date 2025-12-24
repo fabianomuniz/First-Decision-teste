@@ -24,7 +24,7 @@ Cadastro de produtos com Laravel.
 ## Acesso ao painel via WEB
 
 - **URL:** http://localhost
-- **Usuário:** test@example.com
+- **Usuário:** teste@teste.com
 - **Senha:** password
 
 ## API RESTful Protegida
@@ -48,7 +48,7 @@ A API segue o padrão RESTful e utiliza **JSON Web Tokens (JWT)** para autentica
 ```bash
 curl -X POST http://localhost/api/login \
   -H "Accept: application/json" \
-  -d "email=test@example.com" \
+  -d "email=teste@teste.com" \
   -d "password=password"
 ```
 
@@ -139,7 +139,7 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
     *   Insira o JSON de credenciais:
         ```json
         {
-          "email": "test@example.com",
+          "email": "teste@teste.com",
           "password": "password"
         }
         ```
