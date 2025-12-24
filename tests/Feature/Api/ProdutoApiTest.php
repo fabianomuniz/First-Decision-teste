@@ -18,7 +18,9 @@ class ProdutoApiTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->token = auth('api')->login($this->user);
+        /** @var \Tymon\JWTAuth\JWTGuard $guard */
+        $guard = auth('api');
+        $this->token = $guard->login($this->user);
     }
 
     protected function headers()
@@ -100,7 +102,9 @@ class ProdutoApiTest extends TestCase
 
     public function test_unauthenticated_user_cannot_access_produtos()
     {
-        auth('api')->logout();
+        /** @var \Tymon\JWTAuth\JWTGuard $guard */
+        $guard = auth('api');
+        $guard->logout();
         
         $response = $this->getJson('/api/produtos');
         $response->assertStatus(401);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProdutoRequest;
 use App\Models\Produto;
-use App\Services\ProdutoService;
+use App\Interfaces\ProdutoServiceInterface;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
@@ -15,13 +15,13 @@ class ProdutoController extends Controller
 
     protected $produtoService;
 
-    public function __construct(ProdutoService $produtoService)
+    public function __construct(ProdutoServiceInterface $produtoService)
     {
         $this->produtoService = $produtoService;
     }
 
     /**
-     * Display a listing of the resource.
+     * Exibe uma lista do recurso.
      */
     public function index(Request $request)
     {
@@ -33,7 +33,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena um recurso recém-criado no armazenamento.
      */
     public function store(ProdutoRequest $request)
     {
@@ -43,7 +43,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Exibe o recurso especificado.
      */
     public function show(Produto $produto)
     {
@@ -51,7 +51,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza o recurso especificado no armazenamento.
      */
     public function update(ProdutoRequest $request, Produto $produto)
     {
@@ -61,7 +61,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o recurso especificado do armazenamento.
      */
     public function destroy(Produto $produto)
     {

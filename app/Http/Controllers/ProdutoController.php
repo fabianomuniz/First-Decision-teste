@@ -4,33 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProdutoRequest;
 use App\Models\Produto;
-use App\Services\ProdutoService;
+use App\Interfaces\ProdutoServiceInterface;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
     protected $produtoService;
 
-    public function __construct(ProdutoService $produtoService)
+    public function __construct(ProdutoServiceInterface $produtoService)
     {
         $this->produtoService = $produtoService;
     }
 
     /**
-     * Display a listing of the resource.
+     * Exibe uma lista do recurso.
      */
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
         $filters = $request->only(['search', 'min_price', 'max_price', 'min_stock', 'sort', 'direction']);
-        
-        // Clean mask from price inputs
-        if (isset($filters['min_price'])) {
-            $filters['min_price'] = str_replace(['.', ','], ['', '.'], $filters['min_price']);
-        }
-        if (isset($filters['max_price'])) {
-            $filters['max_price'] = str_replace(['.', ','], ['', '.'], $filters['max_price']);
-        }
 
         $produtos = $this->produtoService->list($filters, $perPage);
 
@@ -38,7 +30,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostra o formulário para criar um novo recurso.
      */
     public function create()
     {
@@ -46,7 +38,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena um recurso recém-criado no armazenamento.
      */
     public function store(ProdutoRequest $request)
     {
@@ -57,7 +49,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Exibe o recurso especificado.
      */
     public function show(Produto $produto)
     {
@@ -65,7 +57,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostra o formulário para editar o recurso especificado.
      */
     public function edit(Produto $produto)
     {
@@ -73,7 +65,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza o recurso especificado no armazenamento.
      */
     public function update(ProdutoRequest $request, Produto $produto)
     {
@@ -84,7 +76,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o recurso especificado do armazenamento.
      */
     public function destroy(Produto $produto)
     {

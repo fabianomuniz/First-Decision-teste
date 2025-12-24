@@ -16,7 +16,7 @@ class ProdutoServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->produtoService = new ProdutoService();
+        $this->produtoService = $this->app->make(ProdutoService::class);
     }
 
     public function test_create_produto()

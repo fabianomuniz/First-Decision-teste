@@ -12,21 +12,21 @@ class AuthController extends Controller
     use ApiResponse;
 
     /**
-     * Create a new AuthController instance.
+     * Cria uma nova instância de AuthController.
      *
      * @return void
      */
     public function __construct()
     {
-        // In Laravel 11/12, middleware is often defined in routes or bootstrap, 
-        // but controller middleware still works.
-        // We will define routes with middleware later, but keeping it here is also fine 
-        // if we use the class based middleware definition, but 'auth:api' string might need 
-        // ensuring the alias exists.
+        // No Laravel 11/12, o middleware é frequentemente definido nas rotas ou bootstrap,
+        // mas o middleware de controller ainda funciona.
+        // Definiremos as rotas com middleware posteriormente, mas manter aqui também é aceitável
+        // se usarmos a definição de middleware baseada em classe, mas a string 'auth:api' pode precisar
+        // garantir que o alias exista.
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Obtém um JWT através das credenciais fornecidas.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -42,7 +42,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Obtém o usuário autenticado.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -52,7 +52,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Faz logout do usuário (Invalida o token).
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -64,7 +64,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
+     * Atualiza um token.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -74,7 +74,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the token array structure.
+     * Obtém a estrutura do array de token.
      *
      * @param  string $token
      *

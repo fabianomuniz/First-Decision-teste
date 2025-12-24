@@ -50,7 +50,9 @@ class ApiAuthenticationTest extends TestCase
     public function test_logged_user_can_get_profile()
     {
         $user = User::factory()->create();
-        $token = auth('api')->login($user);
+        /** @var \Tymon\JWTAuth\JWTGuard $guard */
+        $guard = auth('api');
+        $token = $guard->login($user);
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
@@ -68,7 +70,9 @@ class ApiAuthenticationTest extends TestCase
     public function test_logged_user_can_refresh_token()
     {
         $user = User::factory()->create();
-        $token = auth('api')->login($user);
+        /** @var \Tymon\JWTAuth\JWTGuard $guard */
+        $guard = auth('api');
+        $token = $guard->login($user);
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
@@ -87,7 +91,9 @@ class ApiAuthenticationTest extends TestCase
     public function test_logged_user_can_logout()
     {
         $user = User::factory()->create();
-        $token = auth('api')->login($user);
+        /** @var \Tymon\JWTAuth\JWTGuard $guard */
+        $guard = auth('api');
+        $token = $guard->login($user);
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,

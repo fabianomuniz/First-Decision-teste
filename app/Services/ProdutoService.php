@@ -2,60 +2,37 @@
 
 namespace App\Services;
 
+use App\Interfaces\ProdutoRepositoryInterface;
+use App\Interfaces\ProdutoServiceInterface;
 use App\Models\Produto;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 
-class ProdutoService
+class ProdutoService implements ProdutoServiceInterface
 {
+    protected $produtoRepository;
+
+    public function __construct(ProdutoRepositoryInterface $produtoRepository)
+    {
+        $this->produtoRepository = $produtoRepository;
+    }
+
     public function list(array $filters = [], int $perPage = 10): LengthAwarePaginator
     {
-        $query = Produto::query();
-
-        if (!empty($filters['search'])) {
-            $search = $filters['search'];
-            $query->where(function (Builder $q) use ($search) {
-                $q->where('nome', 'like', "%{$search}%")
-                  ->orWhere('descricao', 'like', "%{$search}%");
-            });
-        }
-
-        if (!empty($filters['min_price'])) {
-            $query->where('preco', '>=', $filters['min_price']);
-        }
-
-        if (!empty($filters['max_price'])) {
-            $query->where('preco', '<=', $filters['max_price']);
-        }
-
-        if (!empty($filters['min_stock'])) {
-            $query->where('quantidade_estoque', '>=', $filters['min_stock']);
-        }
-
-        $sort = $filters['sort'] ?? 'created_at';
-        $direction = $filters['direction'] ?? 'desc';
-        $allowedSorts = ['nome', 'preco', 'quantidade_estoque', 'created_at'];
-
-        if (in_array($sort, $allowedSorts)) {
-            $query->orderBy($sort, strtolower($direction) === 'asc' ? 'asc' : 'desc');
-        }
-
-        return $query->paginate($perPage)->withQueryString();
+        return $this->produtoRepository->getAll($filters, $perPage);
     }
 
     public function create(array $data): Produto
     {
-        return Produto::create($data);
+        return $this->produtoRepository->create($data);
     }
 
     public function update(Produto $produto, array $data): Produto
     {
-        $produto->update($data);
-        return $produto;
+        return $this->produtoRepository->update($produto, $data);
     }
 
     public function delete(Produto $produto): void
     {
-        $produto->delete();
+        $this->produtoRepository->delete($produto);
     }
 }

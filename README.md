@@ -162,7 +162,7 @@ Você pode realizar operações de criação, atualização e exclusão utilizan
     *   Insira o JSON de credenciais:
         ```json
         {
-          "email": "test@example.com",
+          "email": "teste@teste.com",
           "password": "password"
         }
         ```
