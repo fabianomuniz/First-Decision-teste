@@ -29,13 +29,28 @@ Cadastro de produtos com Laravel.
 
 ## API RESTful Protegida
 
-A API segue o padrão RESTful e utiliza **JSON Web Tokens (JWT)** para autenticação. Todas as respostas seguem uma estrutura padronizada:
+A API segue o padrão RESTful e utiliza **JSON Web Tokens (JWT)** para autenticação. Todas as respostas seguem uma estrutura padronizada.
+
+**Resposta Padrão:**
 
 ```json
 {
   "data": mixed,      // Dados da resposta (objeto, array ou null)
   "message": string,  // Mensagem descritiva
   "errors": mixed     // Detalhes de erros (ou null em caso de sucesso)
+}
+```
+
+**Resposta com Paginação:**
+
+Quando o endpoint retorna uma lista paginada (ex: listar produtos), a estrutura inclui o campo `meta` e os itens ficam diretamente em `data`:
+
+```json
+{
+  "data": [...],          // Array de itens
+  "meta": { ... },        // Metadados da paginação (current_page, total, etc.)
+  "message": string,
+  "errors": null
 }
 ```
 
@@ -95,22 +110,20 @@ curl -X GET http://localhost/api/produtos \
 **Exemplo de Resposta de Sucesso (200 OK):**
 ```json
 {
-  "data": {
+  "data": [
+    {
+      "id": 1,
+      "nome": "Produto Exemplo",
+      "descricao": "Descrição do produto.",
+      "preco": "100.00",
+      "quantidade_estoque": 10,
+      "created_at": "...",
+      "updated_at": "..."
+    },
+    ...
+  ],
+  "meta": {
     "current_page": 1,
-    "data": [
-      {
-        "id": 1,
-        "nome": "Produto Exemplo",
-        "descricao": "Descrição do produto.",
-        "preco": "100.00",
-        "quantidade_estoque": 10,
-        "created_at": "...",
-        "updated_at": "..."
-      },
-      ...
-    ],
-    "first_page_url": "...",
-    "from": 1,
     "last_page": 1,
     "per_page": 10,
     "total": 1

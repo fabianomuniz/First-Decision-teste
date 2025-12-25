@@ -16,4 +16,8 @@ class Produto extends Model
         'preco',
         'quantidade_estoque',
     ];
+
+    protected $casts = [
+        'preco' => 'decimal:2',
+    ];
 }

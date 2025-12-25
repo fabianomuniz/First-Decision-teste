@@ -37,9 +37,13 @@ class ProdutoApiTest extends TestCase
         $response->assertStatus(200)
                  ->assertJsonStructure([
                      'data' => [
-                         'data' => [
-                             '*' => ['id', 'nome', 'preco']
-                         ]
+                         '*' => ['id', 'nome', 'preco']
+                     ],
+                     'meta' => [
+                         'current_page',
+                         'last_page',
+                         'per_page',
+                         'total'
                      ]
                  ]);
     }
