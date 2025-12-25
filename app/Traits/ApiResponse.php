@@ -31,8 +31,6 @@ trait ApiResponse
             return response()->json([
                 'data' => $items,
                 'meta' => $meta,
-                'message' => $message,
-                'errors' => null,
             ], $statusCode);
         }
 

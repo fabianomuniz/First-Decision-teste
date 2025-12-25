@@ -48,9 +48,7 @@ Quando o endpoint retorna uma lista paginada (ex: listar produtos), a estrutura 
 ```json
 {
   "data": [...],          // Array de itens
-  "meta": { ... },        // Metadados da paginação (current_page, total, etc.)
-  "message": string,
-  "errors": null
+  "meta": { ... }         // Metadados da paginação (current_page, total, etc.)
 }
 ```
 
@@ -127,9 +125,7 @@ curl -X GET http://localhost/api/produtos \
     "last_page": 1,
     "per_page": 10,
     "total": 1
-  },
-  "message": "Produtos recuperados com sucesso.",
-  "errors": null
+  }
 }
 ```
 
