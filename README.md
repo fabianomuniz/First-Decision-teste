@@ -129,14 +129,106 @@ curl -X GET http://localhost/api/produtos \
 }
 ```
 
-### 3. Outras Operações (CRUD)
+### 3. Cadastrar Produto
 
-Você pode realizar operações de criação, atualização e exclusão utilizando os verbos HTTP correspondentes (`POST`, `PUT`, `DELETE`) e enviando o token no header.
+**Endpoint:** `POST /api/produtos`  
+**Header:** `Authorization: Bearer {TOKEN}`
 
-**Criar Produto:** `POST /api/produtos`  
-**Ver Produto:** `GET /api/produtos/{id}`  
-**Atualizar Produto:** `PUT /api/produtos/{id}`  
-**Excluir Produto:** `DELETE /api/produtos/{id}`
+**Corpo da Requisição (JSON):**
+```json
+{
+  "nome": "Smartphone Galaxy",
+  "descricao": "Smartphone última geração, 128GB.",
+  "preco": "2500,00",
+  "quantidade_estoque": 50
+}
+```
+*Nota: O campo `preco` aceita formato brasileiro (ex: "2.500,00").*
+
+**Exemplo de Resposta de Sucesso (201 Created):**
+```json
+{
+  "data": {
+    "id": 2,
+    "nome": "Smartphone Galaxy",
+    "descricao": "Smartphone última geração, 128GB.",
+    "preco": "2500.00",
+    "quantidade_estoque": 50,
+    "created_at": "2023-10-27T10:00:00.000000Z",
+    "updated_at": "2023-10-27T10:00:00.000000Z"
+  },
+  "message": "Produto criado com sucesso.",
+  "errors": null
+}
+```
+
+### 4. Ver Produto
+
+**Endpoint:** `GET /api/produtos/{id}`  
+**Header:** `Authorization: Bearer {TOKEN}`
+
+**Exemplo de Resposta de Sucesso (200 OK):**
+```json
+{
+  "data": {
+    "id": 2,
+    "nome": "Smartphone Galaxy",
+    "descricao": "Smartphone última geração, 128GB.",
+    "preco": "2500.00",
+    "quantidade_estoque": 50,
+    "created_at": "2023-10-27T10:00:00.000000Z",
+    "updated_at": "2023-10-27T10:00:00.000000Z"
+  },
+  "message": "Produto recuperado com sucesso.",
+  "errors": null
+}
+```
+
+### 5. Atualizar Produto
+
+**Endpoint:** `PUT /api/produtos/{id}`  
+**Header:** `Authorization: Bearer {TOKEN}`
+
+**Corpo da Requisição (JSON):**
+```json
+{
+  "nome": "Smartphone Galaxy S23",
+  "descricao": "Smartphone última geração, 256GB.",
+  "preco": "3200,50",
+  "quantidade_estoque": 45
+}
+```
+
+**Exemplo de Resposta de Sucesso (200 OK):**
+```json
+{
+  "data": {
+    "id": 2,
+    "nome": "Smartphone Galaxy S23",
+    "descricao": "Smartphone última geração, 256GB.",
+    "preco": "3200.50",
+    "quantidade_estoque": 45,
+    "created_at": "2023-10-27T10:00:00.000000Z",
+    "updated_at": "2023-10-27T11:30:00.000000Z"
+  },
+  "message": "Produto atualizado com sucesso.",
+  "errors": null
+}
+```
+
+### 6. Excluir Produto
+
+**Endpoint:** `DELETE /api/produtos/{id}`  
+**Header:** `Authorization: Bearer {TOKEN}`
+
+**Exemplo de Resposta de Sucesso (200 OK):**
+```json
+{
+  "data": null,
+  "message": "Produto excluído com sucesso.",
+  "errors": null
+}
+```
 
 ## Testando via Insomnia ou Postman
 
