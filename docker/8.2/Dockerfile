@@ -54,8 +54,15 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u $WWWUSER sail
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
+# Instalar dependências do Node
+COPY package.json package-lock.json ./
+RUN npm install
+
 # Copiar resto do código
 COPY . .
+
+# Build do Vite
+RUN npm run build
 
 # Rodar scripts do composer que foram pulados (opcional, mas bom para gerar autoloader otimizado final e discover packages)
 RUN php artisan package:discover --ansi || true

@@ -23,6 +23,15 @@ if [ ! -d "vendor" ]; then
     fi
 fi
 
+if [ ! -f "public/build/manifest.json" ]; then
+    echo "Vite manifest not found. Building frontend assets..."
+    if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
+        npm install && npm run build
+    else
+        gosu $WWWUSER bash -c "npm install && npm run build"
+    fi
+fi
+
 if [ $# -gt 0 ]; then
     if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
         exec "$@"
