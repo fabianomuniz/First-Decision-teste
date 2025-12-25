@@ -52,10 +52,13 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u $WWWUSER sail
 
 # Instalar dependências do Composer
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 # Copiar resto do código
 COPY . .
+
+# Rodar scripts do composer que foram pulados (opcional, mas bom para gerar autoloader otimizado final e discover packages)
+RUN php artisan package:discover --ansi || true
 
 # Ajustar permissões
 RUN chown -R sail:sail /var/www/html
