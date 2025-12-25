@@ -22,5 +22,12 @@ if [ $# -gt 0 ]; then
         exec gosu $WWWUSER "$@"
     fi
 else
+    # Run migrations and seed
+    if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
+        php artisan migrate --force --seed
+    else
+        gosu $WWWUSER php artisan migrate --force --seed
+    fi
+
     exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
