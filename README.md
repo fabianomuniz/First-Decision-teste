@@ -23,7 +23,7 @@ Cadastro de produtos com Laravel.
 
 ## Acesso ao painel via WEB
 
-- **URL:** http://localhost
+- **URL:** http://localhost:8000
 - **Usuário:** teste@teste.com
 - **Senha:** password
 
@@ -59,7 +59,7 @@ Quando o endpoint retorna uma lista paginada (ex: listar produtos), a estrutura 
 
 **Exemplo de Requisição (cURL):**
 ```bash
-curl -X POST http://localhost/api/login \
+curl -X POST http://localhost:8000/api/login \
   -H "Accept: application/json" \
   -d "email=teste@teste.com" \
   -d "password=password"
@@ -100,7 +100,7 @@ Utilize o `access_token` obtido no login para acessar os endpoints protegidos.
 **Exemplo de Requisição (cURL):**
 ```bash
 # Substitua o token abaixo pelo que você recebeu no login
-curl -X GET http://localhost/api/produtos \
+curl -X GET http://localhost:8000/api/produtos \
   -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." \
   -H "Accept: application/json"
 ```
@@ -235,7 +235,7 @@ curl -X GET http://localhost/api/produtos \
 ### Postman
 
 1.  **Login (Obter Token):**
-    *   Crie uma nova requisição `POST` para `http://localhost/api/login`.
+    *   Crie uma nova requisição `POST` para `http://localhost:8000/api/login`.
     *   Na aba **Body**, selecione `raw` e escolha `JSON`.
     *   Insira o JSON de credenciais:
         ```json
@@ -247,7 +247,7 @@ curl -X GET http://localhost/api/produtos \
     *   Clique em **Send**. Copie o `access_token` retornado no corpo da resposta.
 
 2.  **Requisições Protegidas (ex: Listar Produtos):**
-    *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
+    *   Crie uma nova requisição `GET` para `http://localhost:8000/api/produtos`.
     *   Vá na aba **Authorization**.
     *   No menu "Type", selecione **Bearer Token**.
     *   Cole o token copiado no campo **Token**.
@@ -258,7 +258,7 @@ curl -X GET http://localhost/api/produtos \
 ### Insomnia
 
 1.  **Login (Obter Token):**
-    *   Crie uma nova requisição `POST` para `http://localhost/api/login`.
+    *   Crie uma nova requisição `POST` para `http://localhost:8000/api/login`.
     *   Na aba **Body**, selecione `JSON`.
     *   Insira o JSON de credenciais:
         ```json
@@ -270,7 +270,7 @@ curl -X GET http://localhost/api/produtos \
     *   Clique em **Send**. Copie o `access_token` retornado.
 
 2.  **Requisições Protegidas (ex: Listar Produtos):**
-    *   Crie uma nova requisição `GET` para `http://localhost/api/produtos`.
+    *   Crie uma nova requisição `GET` para `http://localhost:8000/api/produtos`.
     *   Vá na aba **Auth**.
     *   Selecione **Bearer Token**.
     *   Cole o token no campo **Token**.
