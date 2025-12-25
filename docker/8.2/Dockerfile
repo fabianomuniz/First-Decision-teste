@@ -3,6 +3,8 @@ FROM ubuntu:24.04
 LABEL maintainer="Taylor Otwell"
 
 ARG NODE_VERSION=24
+ARG WWWGROUP=1000
+ARG WWWUSER=1000
 
 WORKDIR /var/www/html
 
@@ -43,18 +45,27 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.2
 
-ARG WWWGROUP=1000
-ARG WWWUSER=1000
 RUN echo "WWWGROUP=$WWWGROUP"
-
 RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u $WWWUSER sail
-RUN git config --global --add safe.directory /var/www/html
 
-COPY start-container /usr/local/bin/start-container
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php/8.2/cli/conf.d/99-sail.ini
+# Instalar dependências do Composer
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Copiar resto do código
+COPY . .
+
+# Ajustar permissões
+RUN chown -R sail:sail /var/www/html
+RUN chmod -R 775 storage bootstrap/cache
+
+# Arquivos de configuração do Docker
+COPY docker/8.2/start-container /usr/local/bin/start-container
+COPY docker/8.2/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/8.2/php.ini /etc/php/8.2/cli/conf.d/99-sail.ini
+
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 80/tcp
