@@ -85,6 +85,26 @@
                         <table class="table table-striped table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
+                                    <th scope="col" style="width: 80px;">
+                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => (request('sort') === 'id' && request('direction') === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none text-dark d-flex align-items-center gap-1">
+                                            ID
+                                            @if(request('sort') === 'id')
+                                                @if(request('direction') === 'asc')
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1rem; height: 1rem;">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1rem; height: 1rem;">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                                    </svg>
+                                                @endif
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-secondary opacity-25" style="width: 1rem; height: 1rem;">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                                </svg>
+                                            @endif
+                                        </a>
+                                    </th>
                                     <th scope="col" class="w-50">
                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'nome', 'direction' => (request('sort') === 'nome' && request('direction') === 'asc') ? 'desc' : 'asc']) }}" class="text-decoration-none text-dark d-flex align-items-center gap-1">
                                             Nome
@@ -151,6 +171,7 @@
                             <tbody>
                                 @forelse($produtos as $produto)
                                     <tr>
+                                        <td>{{ $produto->id }}</td>
                                         <td class="fw-medium">{{ $produto->nome }}</td>
                                         <td class="text-nowrap">R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
                                         <td class="text-center">{{ $produto->quantidade_estoque }}</td>
@@ -187,7 +208,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">Nenhum registro encontrado.</td>
+                                        <td colspan="5" class="text-center py-4 text-muted">Nenhum registro encontrado.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

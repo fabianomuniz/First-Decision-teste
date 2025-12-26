@@ -44,7 +44,7 @@ class ProdutoRepository implements ProdutoRepositoryInterface
 
         $sort = $filters['sort'] ?? 'created_at';
         $direction = $filters['direction'] ?? 'desc';
-        $allowedSorts = ['nome', 'preco', 'quantidade_estoque', 'created_at'];
+        $allowedSorts = ['id', 'nome', 'preco', 'quantidade_estoque', 'created_at'];
 
         if (in_array($sort, $allowedSorts)) {
             $query->orderBy($sort, strtolower($direction) === 'asc' ? 'asc' : 'desc');
