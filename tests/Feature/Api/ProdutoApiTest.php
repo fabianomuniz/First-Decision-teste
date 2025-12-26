@@ -94,6 +94,41 @@ class ProdutoApiTest extends TestCase
         $this->assertDatabaseHas('produtos', ['id' => $produto->id, 'nome' => 'Produto Atualizado']);
     }
 
+    public function test_cannot_create_produto_with_duplicate_name()
+    {
+        Produto::factory()->create(['nome' => 'Produto Duplicado']);
+
+        $data = [
+            'nome' => 'Produto Duplicado',
+            'descricao' => 'Outra descrição',
+            'preco' => 100.00,
+            'quantidade_estoque' => 10,
+        ];
+
+        $response = $this->postJson('/api/produtos', $data, $this->headers());
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['nome']);
+    }
+
+    public function test_cannot_update_produto_with_duplicate_name()
+    {
+        $produto1 = Produto::factory()->create(['nome' => 'Produto 1']);
+        $produto2 = Produto::factory()->create(['nome' => 'Produto 2']);
+
+        $data = [
+            'nome' => 'Produto 1',
+            'descricao' => 'Nova Desc',
+            'preco' => 150.00,
+            'quantidade_estoque' => 30,
+        ];
+
+        $response = $this->putJson("/api/produtos/{$produto2->id}", $data, $this->headers());
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['nome']);
+    }
+
     public function test_can_delete_produto()
     {
         $produto = Produto::factory()->create();
