@@ -64,6 +64,8 @@ COPY . .
 
 # Build do Vite
 RUN npm run build
+# Backup dos arquivos compilados para restaurar caso o volume os oculte
+RUN mkdir -p /opt/assets_backup && cp -r public/build /opt/assets_backup/
 
 # Rodar scripts do composer que foram pulados (opcional, mas bom para gerar autoloader otimizado final e discover packages)
 RUN php artisan package:discover --ansi || true
