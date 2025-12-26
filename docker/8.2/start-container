@@ -16,6 +16,7 @@ fi
 chmod -R ugo+rw /.composer
 
 if [ ! -d "vendor" ]; then
+    export COMPOSER_PROCESS_TIMEOUT=2000
     if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
         composer install
     else

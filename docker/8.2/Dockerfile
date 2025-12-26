@@ -51,6 +51,7 @@ RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u $WWWUSER sail
 
 # Instalar dependências do Composer
+ENV COMPOSER_PROCESS_TIMEOUT=2000
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
