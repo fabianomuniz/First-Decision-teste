@@ -19,7 +19,9 @@ Cadastro de produtos com Laravel.
    ```bash
    docker compose up --build -d
    ```
-   Durante o processo de build, o Docker executará automaticamente as configurações necessárias.
+   Durante o processo de build, o ambiente da aplicação é configurado automaticamente, incluindo a instalação das dependências necessárias para o backend e o frontend. Dessa forma, não é necessário executar comandos adicionais após a inicialização dos containers.
+   
+   Observação: Após a conclusão do build, a aplicação pode levar alguns instantes para ficar totalmente disponível. Esse tempo varia de acordo com a capacidade da máquina, uma vez que ocorre a preparação e inicialização das dependências do PHP e do ambiente JavaScript.
 
 ## Acesso ao painel via WEB
 
